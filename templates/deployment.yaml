@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-nginx
+  name: my-nginx
   labels:
     app: nginx
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: 1
   selector:
     matchLabels:
       app: nginx
@@ -15,17 +15,7 @@ spec:
         app: nginx
     spec:
       containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: 80
-              protocol: TCP
-          volumeMounts:
-            - name: nginx-index-file
-              mountPath: /usr/share/nginx/html/
-      volumes:
-        - name: nginx-index-file
-          configMap:
-            name: index-html-configmap
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
